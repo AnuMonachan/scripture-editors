@@ -26,6 +26,7 @@ import {
 } from "shared/nodes/scripture/usj/node.utils";
 import {
   $isImmutableNoteCallerNode,
+  defaultNoteCallers,
   ImmutableNoteCallerNode,
   immutableNoteCallerNodeName,
 } from "../nodes/scripture/usj/ImmutableNoteCallerNode";
@@ -33,6 +34,7 @@ import {
   $findImmutableNoteCallerNodes,
   CallerData,
   generateNoteCaller,
+  wasNodeCreated,
 } from "../nodes/scripture/usj/node-react.utils";
 import { UsjNodeOptions } from "../nodes/scripture/usj/usj-node-options.model";
 
@@ -132,8 +134,7 @@ function $noteCallerNodeInsertedTransform(
 ) {
   if ($hasUpdateTag(EXTERNAL_USJ_MUTATION_TAG)) return;
 
-  // check if the node exists in the previous state
-  const nodeWasCreated = editor.getEditorState().read(() => !$getNodeByKey(node.getKey()));
+  const nodeWasCreated = wasNodeCreated(editor, node.getKey());
   const parent = node?.getParent();
   if (
     nodeWasCreated &&
@@ -163,8 +164,8 @@ function $generateAllNoteCallers(nodeOptions: UsjNodeOptions, logger?: LoggerBas
   });
   // generate caller for each
   const callerData: CallerData = { count: 0 };
+  const noteCallers = nodeOptions[immutableNoteCallerNodeName]?.noteCallers ?? defaultNoteCallers;
   noteCallerNodes.forEach((noteCallerNode) => {
-    const noteCallers = nodeOptions[immutableNoteCallerNodeName]?.noteCallers;
     const caller = generateNoteCaller(GENERATOR_NOTE_CALLER, noteCallers, callerData, logger);
     if (noteCallerNode.__caller !== caller) noteCallerNode.setCaller(caller);
   });

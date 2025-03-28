@@ -36,18 +36,18 @@ const nodeOptions: UsjNodeOptions = {
 };
 // Word "man" inside first q1 of PSA 1:1.
 const annotationRange1 = {
-  start: { jsonPathIndexes: [10, 2], offset: 15 },
-  end: { jsonPathIndexes: [10, 2], offset: 18 },
+  start: { jsonPath: "$.content[10].content[2]", offset: 15 },
+  end: { jsonPath: "$.content[10].content[2]", offset: 18 },
 };
 // Phrase "man who" inside first q1 of PSA 1:1.
 const annotationRange2 = {
-  start: { jsonPathIndexes: [10, 2], offset: 15 },
-  end: { jsonPathIndexes: [10, 2], offset: 22 },
+  start: { jsonPath: "$.content[10].content[2]", offset: 15 },
+  end: { jsonPath: "$.content[10].content[2]", offset: 22 },
 };
 // Word "stand" inside first q2 of PSA 1:1.
 const annotationRange3 = {
-  start: { jsonPathIndexes: [11, 0], offset: 4 },
-  end: { jsonPathIndexes: [11, 0], offset: 9 },
+  start: { jsonPath: "$.content[11].content[0]", offset: 4 },
+  end: { jsonPath: "$.content[11].content[0]", offset: 9 },
 };
 const defaultAnnotations: Annotations = {
   annotation1: {
@@ -93,7 +93,7 @@ function getOptions(
 
 export default function App() {
   const marginalRef = useRef<MarginalRef | null>(null);
-  const [definedOptions, setDefinedOptions] = useState(true);
+  const [definedOptions, setDefinedOptions] = useState(false);
   const [isReadonly, setIsReadonly] = useState(false);
   const [hasSpellCheck, setHasSpellCheck] = useState(false);
   const [textDirection, setTextDirection] = useState<TextDirection>("ltr");
@@ -102,8 +102,9 @@ export default function App() {
   const [annotations, setAnnotations] = useState(defaultAnnotations);
   const [annotationType, setAnnotationType] = useState("spelling");
 
-  const options = useMemo<EditorOptions>(
-    () => (definedOptions ? getOptions(isReadonly, hasSpellCheck, textDirection, viewMode) : {}),
+  const options = useMemo<EditorOptions | undefined>(
+    () =>
+      definedOptions ? getOptions(isReadonly, hasSpellCheck, textDirection, viewMode) : undefined,
     [definedOptions, isReadonly, hasSpellCheck, textDirection, viewMode],
   );
 

@@ -6,6 +6,7 @@ import {
   $isElementNode,
   $isRangeSelection,
   $isTextNode,
+  EditorUpdateOptions,
   LexicalEditor,
   LexicalNode,
   RangeSelection,
@@ -20,7 +21,11 @@ import { ParaNode } from "shared/nodes/scripture/usj/ParaNode";
 import { MarkerAction } from "shared/utils/get-marker-action.model";
 import { Marker } from "shared/utils/usfm/usfmTypes";
 import { createLexicalUsjNode } from "shared/utils/usj/contentToLexicalNode";
-import { $isSomeVerseNode } from "shared-react/nodes/scripture/usj/node-react.utils";
+import {
+  $isSomeVerseNode,
+  $removeLeadingSpace,
+  $addTrailingSpace,
+} from "shared-react/nodes/scripture/usj/node-react.utils";
 import { ViewOptions } from "./view-options.utils";
 import usjEditorAdaptor from "./usj-editor.adaptor";
 
@@ -65,11 +70,11 @@ const markerActions: {
         marker: "f",
         caller: GENERATOR_NOTE_CALLER,
         content: [
-          { type: "char", marker: "fr", content: [`${chapterNum}:${verseNum} `] },
+          { type: "char", marker: "fr", content: [`${chapterNum}:${verseNum}`] },
           {
             type: "char",
             marker: "ft",
-            content: [" "],
+            content: ["-"],
           },
         ],
       };
@@ -84,11 +89,11 @@ const markerActions: {
         marker: "x",
         caller: GENERATOR_NOTE_CALLER,
         content: [
-          { type: "char", marker: "xo", content: [`${chapterNum}:${verseNum} `] },
+          { type: "char", marker: "xo", content: [`${chapterNum}:${verseNum}`] },
           {
             type: "char",
             marker: "xt",
-            content: [" "],
+            content: ["-"],
           },
         ],
       };
@@ -102,6 +107,8 @@ export function getUsjMarkerAction(
   marker: string,
   _markerData?: Marker,
   viewOptions?: ViewOptions,
+  /** Included for tests, e.g. `{ discrete: true }` */
+  editorUpdateOptions?: EditorUpdateOptions,
 ): MarkerAction {
   const markerAction = getMarkerAction(marker);
   const action = (currentEditor: { reference: SerializedVerseRef; editor: LexicalEditor }) => {
@@ -131,14 +138,16 @@ export function getUsjMarkerAction(
           }
         } else {
           selection.insertNodes([nodeToInsert]);
-          $moveTextLeadingSpaceToPreviousNode(nodeToInsert);
           $moveVerseFollowingSpaceToPreviousNode(nodeToInsert);
+          const nextNode = nodeToInsert.getNextSibling();
+          if (nextNode) nextNode.selectStart();
+          else nodeToInsert.selectStart();
         }
       } else {
         // Insert the node directly
         selection?.insertNodes([nodeToInsert]);
       }
-    });
+    }, editorUpdateOptions);
   };
   return { action, label: markerAction?.label };
 }
@@ -169,7 +178,7 @@ function getMarkerAction(marker: string): {
           const content: MarkerContent = {
             type: CharNode.getType(),
             marker,
-            content: [" "],
+            content: ["-"],
           };
           return [content];
         },
@@ -287,12 +296,8 @@ function $wrapNode(node: LexicalNode, wrapper: LexicalNode): void {
     if ($isTextNode(node) && wrapper.isInline() && text.startsWith(" ")) {
       text = text.trimStart();
       const previousNode = wrapper.getPreviousSibling();
-      if ($isTextNode(previousNode)) {
-        const previousText = previousNode.getTextContent();
-        if (!previousText.endsWith(" ")) previousNode.setTextContent(`${previousText} `);
-      } else {
-        wrapper.insertBefore($createTextNode(" "));
-      }
+      $addTrailingSpace(previousNode);
+      if (!$isTextNode(previousNode)) wrapper.insertBefore($createTextNode(" "));
     }
     wrapper.setTextContent(text);
     node.remove();
@@ -305,26 +310,6 @@ function $wrapNode(node: LexicalNode, wrapper: LexicalNode): void {
 // #endregion
 
 /**
- * Moves the leading space of a text node to the previous node.
- *
- * This function checks if the given node is a text node and if it starts with a space. If both
- * conditions are met, it trims the leading space from the text node and appends a space to the
- * previous node if it is a text node and doesn't end in a space already.
- *
- * @param node - The node to check for leading space.
- */
-function $moveTextLeadingSpaceToPreviousNode(node: LexicalNode): void {
-  if (!$isTextNode(node) || !node.getTextContent().startsWith(" ")) return;
-
-  node.setTextContent(node.getTextContent().trimStart());
-  const previousNode = node.getPreviousSibling();
-  if ($isTextNode(previousNode)) {
-    const previousText = previousNode.getTextContent();
-    if (!previousText.endsWith(" ")) previousNode.setTextContent(`${previousText} `);
-  }
-}
-
-/**
  * Moves the leading space of a node following a verse node to the previous node.
  *
  * This function checks if the previous node ends in a space and adds one if needed. It then checks
@@ -335,15 +320,6 @@ function $moveTextLeadingSpaceToPreviousNode(node: LexicalNode): void {
 function $moveVerseFollowingSpaceToPreviousNode(node: LexicalNode) {
   if (!$isSomeVerseNode(node)) return;
 
-  const previousNode = node.getPreviousSibling();
-  if ($isTextNode(previousNode)) {
-    const previousText = previousNode.getTextContent();
-    if (!previousText.endsWith(" ")) previousNode.setTextContent(`${previousText} `);
-  }
-
-  const nextNode = node.getNextSibling();
-  if ($isTextNode(nextNode)) {
-    const nextText = nextNode.getTextContent();
-    if (nextText.startsWith(" ")) nextNode.setTextContent(nextText.trimStart());
-  }
+  $addTrailingSpace(node.getPreviousSibling());
+  $removeLeadingSpace(node.getNextSibling());
 }

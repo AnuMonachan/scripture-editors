@@ -24,6 +24,7 @@ import {
 import { $createParaNode } from "shared/nodes/scripture/usj/ParaNode";
 import {
   $createImmutableNoteCallerNode,
+  defaultNoteCallers,
   ImmutableNoteCallerNode,
   immutableNoteCallerNodeName,
 } from "../nodes/scripture/usj/ImmutableNoteCallerNode";
@@ -31,7 +32,6 @@ import {
   $createImmutableVerseNode,
   ImmutableVerseNode,
 } from "../nodes/scripture/usj/ImmutableVerseNode";
-import useDefaultNodeOptions from "../nodes/scripture/usj/use-default-node-options.hook";
 import { UsjNodeOptions } from "../nodes/scripture/usj/usj-node-options.model";
 import NoteNodePlugin from "./NoteNodePlugin";
 
@@ -130,7 +130,7 @@ describe("NoteNodePlugin", () => {
     }
 
     it("should insert footnote after the first footnote and renumber", async () => {
-      const { editor } = await testEnvironment({}, $initialEditorState);
+      const { editor } = await testEnvironment(undefined, $initialEditorState);
       editor.getEditorState().read(() => {
         expect(getNoteCaller(ch2FirstNoteNode)).toBe("d");
         expect(getNoteCaller(ch2SecondNoteNode)).toBe("e");
@@ -151,7 +151,7 @@ describe("NoteNodePlugin", () => {
     });
 
     it("should remove note and renumber", async () => {
-      const { editor } = await testEnvironment({}, $initialEditorState);
+      const { editor } = await testEnvironment(undefined, $initialEditorState);
 
       await removeNode(editor, firstNoteNode);
 
@@ -212,7 +212,9 @@ function $defaultInitialEditorState() {
 }
 
 async function testEnvironment(
-  nodeOptions: UsjNodeOptions = {},
+  nodeOptions: UsjNodeOptions = {
+    [immutableNoteCallerNodeName]: { noteCallers: defaultNoteCallers },
+  },
   $initialEditorState: () => void = $defaultInitialEditorState,
 ) {
   let editor: LexicalEditor;
@@ -223,8 +225,6 @@ async function testEnvironment(
   }
 
   function App() {
-    useDefaultNodeOptions(nodeOptions);
-
     return (
       <LexicalComposer
         initialConfig={{
@@ -268,7 +268,7 @@ async function testEnvironment(
  *   end of the startNode's text content.
  * @param endNode - The ending TextNode of the selection. Defaults to the startNode.
  * @param endOffset - The offset within the endNode where the selection ends. Defaults to the
- *   startOffset.
+ *   end of the endNode's text content.
  * @returns The inserted NoteNode.
  */
 async function insertNoteNodeAtSelection(
@@ -282,9 +282,9 @@ async function insertNoteNodeAtSelection(
   let insertedNoteNode: NoteNode | undefined;
   await act(async () => {
     editor.update(() => {
-      if (!startOffset) startOffset = startNode.getTextContentSize();
+      if (startOffset === undefined) startOffset = startNode.getTextContentSize();
+      if (endOffset === undefined) endOffset = endNode ? endNode.getTextContentSize() : startOffset;
       if (!endNode) endNode = startNode;
-      if (!endOffset) endOffset = startOffset;
       const rangeSelection = $createRangeSelection();
       rangeSelection.anchor = $createPoint(startNode.getKey(), startOffset, "text");
       rangeSelection.focus = $createPoint(endNode.getKey(), endOffset, "text");
