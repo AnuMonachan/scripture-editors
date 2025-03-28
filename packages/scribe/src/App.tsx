@@ -9,7 +9,6 @@ import { UsjNodeOptions } from "shared-react/nodes/scripture/usj/usj-node-option
 import { immutableNoteCallerNodeName } from "shared-react/nodes/scripture/usj/ImmutableNoteCallerNode";
 // import { Usj2Usfm } from "./hooks/usj2Usfm";
 import "shared/styles/nodes-menu.css";
-
 const defaultUsj: Usj = {
   type: USJ_TYPE,
   version: USJ_VERSION,
@@ -44,9 +43,22 @@ function App() {
   useEffect(() => {
     console.log({ scrRef });
   }, [scrRef]);
+  console.log({ scrRef }, defaultScrRef, "ser");
   return (
     <div className="flex-center m-2 flex h-editor justify-center p-8">
       <div className="relative w-2/3 overflow-hidden rounded-md border-2 border-secondary">
+        <button
+          onClick={() =>
+            setScrRef({
+              book: "REV",
+              chapterNum: 1,
+              verseNum: 6,
+            })
+          }
+        >
+          Hello
+        </button>
+
         <div className="h-editor overflow-y-auto p-2">
           <Editor
             usjInput={defaultUsj}

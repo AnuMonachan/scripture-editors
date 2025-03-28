@@ -121,6 +121,12 @@ import {
   UsjNodeOptions,
 } from "shared-react/nodes/scripture/usj/usj-node-options.model";
 import { ViewOptions, getVerseNodeClass, getViewOptions } from "./view-options.utils";
+import {
+  AudioButtonNode,
+  SerializedAudioButtonNode,
+  AUDIO_BUTTON_MARKER,
+  AUDIO_BUTTON_VERSION,
+} from "shared/nodes/scripture/usj/AudioButtonNode";
 
 interface UsjEditorAdaptor extends EditorAdaptor {
   initialize: typeof initialize;
@@ -150,6 +156,9 @@ let addMissingComments: AddMissingComments;
 /** Logger instance. */
 let _logger: LoggerBasic;
 
+let book_value: string = "";
+let chapter_value: string = "";
+let verse_value: string = "";
 export function initialize(
   nodeOptions: UsjNodeOptions | undefined,
   logger: LoggerBasic | undefined,
@@ -157,11 +166,17 @@ export function initialize(
   commentIds = [];
   setNodeOptions(nodeOptions);
   setLogger(logger);
+  book_value = "";
+  chapter_value = "";
+  verse_value = "";
 }
 
 export function reset(callerCountValue = 0) {
   //Reset the caller count used for note callers.
   callerData.count = callerCountValue;
+  book_value = "";
+  chapter_value = "";
+  verse_value = "";
 }
 
 export function serializeEditorState(
@@ -246,6 +261,7 @@ function createBook(markerObject: MarkerObject): SerializedBookNode {
     _logger?.warn(`Unexpected book code '${code}'!`);
   }
   const unknownAttributes = getUnknownAttributes(markerObject);
+  book_value = code ?? "";
 
   return removeUndefinedProperties({
     type: BookNode.getType(),
@@ -270,6 +286,7 @@ function createChapter(
   const unknownAttributes = getUnknownAttributes(markerObject);
   let showMarker: boolean | undefined;
   if (_viewOptions?.markerMode === "visible") showMarker = true;
+  chapter_value = number ?? "";
 
   return _viewOptions?.markerMode === "editable"
     ? removeUndefinedProperties({
@@ -314,6 +331,8 @@ function createVerse(
   if (_viewOptions?.markerMode === "editable") text = getVisibleOpenMarkerText(marker, number);
   else if (_viewOptions?.markerMode === "visible") showMarker = true;
   const unknownAttributes = getUnknownAttributes(markerObject);
+  // Update the global verse_value
+  verse_value = number ?? "";
 
   return removeUndefinedProperties({
     type,
@@ -549,6 +568,144 @@ function createText(text: string, mode: TextModeType = "normal"): SerializedText
   };
 }
 
+// Define interfaces for the different types of audio ingredients
+interface BaseAudioIngredient {
+  checksum: {
+    md5: string;
+  };
+  mimeType: string;
+  size: number;
+}
+
+interface MetadataIngredient extends BaseAudioIngredient {
+  role: string;
+}
+
+interface AudioFileIngredient extends BaseAudioIngredient {
+  scope: {
+    [bookCode: string]: string[];
+  };
+}
+
+type AudioIngredient = MetadataIngredient | AudioFileIngredient;
+
+const audioIngredients: Record<string, AudioIngredient> = {
+  "audio/ingredients/versification.json": {
+    checksum: {
+      md5: "3449c9e5e332f1dbb81505cd739fbf3f",
+    },
+    mimeType: "application/json",
+    size: 14696,
+    role: "x-versification",
+  },
+  "audio/ingredients/license.md": {
+    checksum: {
+      md5: "3449c9e5e332f1dbb81505cd739fbf3f",
+    },
+    mimeType: "text/md",
+    size: 18535,
+    role: "x-licence",
+  },
+  "audio/ingredients/scribe-settings.json": {
+    checksum: {
+      md5: "3449c9e5e332f1dbb81505cd739fbf3f",
+    },
+    mimeType: "application/json",
+    size: 279,
+    role: "x-scribe",
+  },
+  "audio/ingredients/3JN/1/1.wav": {
+    checksum: {
+      md5: "8997e47f2f062cceb54aa7b1ceeba35b",
+    },
+    mimeType: "audio/mp3",
+    size: 14093,
+    scope: {
+      "3JN": ["1:1"],
+    },
+  },
+  "audio/ingredients/3JN/1/2.wav": {
+    checksum: {
+      md5: "8997e47f2f062cceb54aa7b1ceeba35b",
+    },
+    mimeType: "audio/mp3",
+    size: 14093,
+    scope: {
+      "3JN": ["1:2"],
+    },
+  },
+  "audio/ingredients/3JN/1/5.wav": {
+    checksum: {
+      md5: "8997e47f2f062cceb54aa7b1ceeba35b",
+    },
+    mimeType: "audio/mp3",
+    size: 14093,
+    scope: {
+      "3JN": ["1:5"],
+    },
+  },
+  "audio/ingredients/3JN/1/10.wav": {
+    checksum: {
+      md5: "8997e47f2f062cceb54aa7b1ceeba35b",
+    },
+    mimeType: "audio/mp3",
+    size: 14093,
+    scope: {
+      "3JN": ["1:10"],
+    },
+  },
+  "audio/ingredients/3JN/1/3.wav": {
+    checksum: {
+      md5: "8997e47f2f062cceb54aa7b1ceeba35b",
+    },
+    mimeType: "audio/mp3",
+    size: 14093,
+    scope: {
+      "3JN": ["1:3"],
+    },
+  },
+  "audio/ingredients/3JN/1/6.wav": {
+    checksum: {
+      md5: "8997e47f2f062cceb54aa7b1ceeba35b",
+    },
+    mimeType: "audio/mp3",
+    size: 14093,
+    scope: {
+      "3JN": ["1:6"],
+    },
+  },
+};
+
+function createAudioButton(): SerializedAudioButtonNode | null {
+  let audioPath = "";
+
+  for (const [filePath, details] of Object.entries(audioIngredients)) {
+    console.log(filePath, details);
+
+    if ("scope" in details) {
+      const scopeDetails = details.scope;
+      if (scopeDetails && scopeDetails[book_value]) {
+        const scopeVerses = scopeDetails[book_value];
+        const currentReference = `${chapter_value}:${verse_value}`;
+
+        if (scopeVerses.includes(currentReference)) {
+          audioPath = filePath;
+
+          return {
+            type: AudioButtonNode.getType(),
+            marker: AUDIO_BUTTON_MARKER,
+            url: audioPath,
+            version: AUDIO_BUTTON_VERSION,
+          };
+        }
+      }
+    }
+  }
+
+  console.warn("No matching audio file found for", book_value, chapter_value, verse_value);
+  return null;
+}
+
 function addOpeningMarker(marker: string, nodes: SerializedLexicalNode[]) {
   if (_viewOptions?.markerMode === "visible" || _viewOptions?.markerMode === "editable") {
     nodes.push(createMarker(marker));
@@ -648,6 +805,12 @@ export function recurseNodes(markers: MarkerContent[] | undefined): SerializedLe
         case VerseNode.getType():
           if (!_viewOptions?.hasSpacing) nodes.push(serializedLineBreakNode);
           nodes.push(createVerse(markerContent));
+
+          const audioButton = createAudioButton(); // Call function
+          if (audioButton) {
+            nodes.push(audioButton); // Only push if not null
+          }
+
           break;
         case CharNode.getType():
           addOpeningMarker(markerContent.marker, nodes);

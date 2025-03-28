@@ -17,17 +17,24 @@
     "@biblionexus-foundation/scripture-utilities": "workspace:*",
     "@lexical/mark": "^0.27.2",
     "@lexical/utils": "^0.27.2",
+    "@lexical/react": "^0.27.2",
     "@sillsdev/scripture": "^2.0.2",
     "epitelete": "^0.2.20",
     "lexical": "^0.27.2",
-    "open-patcher": "1.0.0-beta.1"
+    "open-patcher": "1.0.0-beta.1",
+    "wavesurfer.js": "7.9.0"
   },
   "devDependencies": {
     "@types/deep-equal": "^1.0.4",
     "deep-equal": "^2.2.3",
     "json-difference": "^1.16.1",
     "proskomma-core": "^0.10.10",
-    "proskomma-json-tools": "^0.8.21"
+    "proskomma-json-tools": "^0.8.21",
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^18.3.5",
+    "postcss": "^8.5.3",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
   },
   "repository": {
     "type": "git",

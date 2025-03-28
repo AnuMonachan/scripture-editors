@@ -1,0 +1,265 @@
+{
+  "type": "USJ",
+  "version": "0.2.0",
+  "content": [
+    { "type": "book", "marker": "id", "content": [], "code": "3JN" },
+    { "type": "chapter", "marker": "c", "number": "1", "sid": "3JN 1" },
+    { "type": "para", "marker": "s1", "content": ["Greeting"] },
+    {
+      "type": "para",
+      "marker": "p",
+      "content": [
+        { "type": "verse", "marker": "v", "number": "1", "sid": "3JN 1:1" },
+        {
+          "type": "note",
+          "marker": "x",
+          "content": [
+            { "type": "char", "marker": "xo", "content": ["1:1"] },
+            { "type": "char", "marker": "xt", "content": ["2 John 1"] }
+          ],
+          "caller": "+"
+        },
+        "The elder to the beloved Gaius,",
+        {
+          "type": "note",
+          "marker": "x",
+          "content": [
+            { "type": "char", "marker": "xo", "content": ["1:1"] },
+            { "type": "char", "marker": "xt", "content": ["1 John 3:18; 2 John 1"] }
+          ],
+          "caller": "+"
+        },
+        "whom I love in truth."
+      ]
+    },
+    {
+      "type": "para",
+      "marker": "p",
+      "content": [
+        { "type": "verse", "marker": "v", "number": "2", "sid": "3JN 1:2" },
+        "Beloved, I pray that all may go well with you and that you may be in good health, as it goes well with your soul.",
+        { "type": "verse", "marker": "v", "number": "3", "sid": "3JN 1:3" },
+        "For",
+        {
+          "type": "note",
+          "marker": "x",
+          "content": [
+            { "type": "char", "marker": "xo", "content": ["1:3"] },
+            { "type": "char", "marker": "xt", "content": ["2 John 4"] }
+          ],
+          "caller": "+"
+        },
+        "I rejoiced greatly when the brothers",
+        {
+          "type": "note",
+          "marker": "f",
+          "content": [
+            { "type": "char", "marker": "fr", "content": ["1:3"] },
+            { "type": "char", "marker": "ft", "content": ["Or"] },
+            { "type": "char", "marker": "fq", "content": ["brothers and sisters"] },
+            ". In New Testament usage, depending on the context, the plural Greek word",
+            { "type": "char", "marker": "fq", "content": ["adelphoi"] },
+            "(translated \u201cbrothers\u201d) may refer either to",
+            { "type": "char", "marker": "fq", "content": ["brothers"] },
+            "or to",
+            { "type": "char", "marker": "fq", "content": ["brothers and sisters"] },
+            "; also verses 5, 10"
+          ],
+          "caller": "+"
+        },
+        "came and testified to your truth, as indeed you are walking in the truth.",
+        { "type": "verse", "marker": "v", "number": "4", "sid": "3JN 1:4" },
+        "I have no greater joy than to hear that",
+        {
+          "type": "note",
+          "marker": "x",
+          "content": [
+            { "type": "char", "marker": "xo", "content": ["1:4"] },
+            {
+              "type": "char",
+              "marker": "xt",
+              "content": [
+                "[1 Cor. 4:14, 15; Gal. 4:19; 1 Tim. 1:2; 2 Tim. 1:2; Titus 1:4; Philem. 10]"
+              ]
+            }
+          ],
+          "caller": "+"
+        },
+        "my children are walking in the truth."
+      ]
+    },
+    { "type": "para", "marker": "s1", "content": ["Support and Opposition"] },
+    {
+      "type": "para",
+      "marker": "p",
+      "content": [
+        { "type": "verse", "marker": "v", "number": "5", "sid": "3JN 1:5" },
+        "Beloved, it is a faithful thing you do in all your efforts for",
+        {
+          "type": "note",
+          "marker": "x",
+          "content": [
+            { "type": "char", "marker": "xo", "content": ["1:5"] },
+            { "type": "char", "marker": "xt", "content": ["[Gal. 6:10; Heb. 13:1]"] }
+          ],
+          "caller": "+"
+        },
+        "these brothers,",
+        {
+          "type": "note",
+          "marker": "x",
+          "content": [
+            { "type": "char", "marker": "xo", "content": ["1:5"] },
+            { "type": "char", "marker": "xt", "content": ["See Matt. 25:35"] }
+          ],
+          "caller": "+"
+        },
+        "strangers as they are,",
+        { "type": "verse", "marker": "v", "number": "6", "sid": "3JN 1:6" },
+        "who testified to your love before the church. You will do well to send them on their journey in a manner",
+        {
+          "type": "note",
+          "marker": "x",
+          "content": [
+            { "type": "char", "marker": "xo", "content": ["1:6"] },
+            { "type": "char", "marker": "xt", "content": ["1 Thess. 2:12; [Col. 1:10]"] }
+          ],
+          "caller": "+"
+        },
+        "worthy of God.",
+        { "type": "verse", "marker": "v", "number": "7", "sid": "3JN 1:7" },
+        "For they have gone out for the sake of",
+        {
+          "type": "note",
+          "marker": "x",
+          "content": [
+            { "type": "char", "marker": "xo", "content": ["1:7"] },
+            { "type": "char", "marker": "xt", "content": ["See Acts 5:41"] }
+          ],
+          "caller": "+"
+        },
+        "the name,",
+        {
+          "type": "note",
+          "marker": "x",
+          "content": [
+            { "type": "char", "marker": "xo", "content": ["1:7"] },
+            { "type": "char", "marker": "xt", "content": ["1 Cor. 9:12, 15"] }
+          ],
+          "caller": "+"
+        },
+        "accepting nothing from the Gentiles.",
+        { "type": "verse", "marker": "v", "number": "8", "sid": "3JN 1:8" },
+        "Therefore we ought to support people like these, that we may be fellow workers for the truth."
+      ]
+    },
+    {
+      "type": "para",
+      "marker": "p",
+      "content": [
+        { "type": "verse", "marker": "v", "number": "9", "sid": "3JN 1:9" },
+        "I have written something to the church, but Diotrephes, who likes to put himself first, does not acknowledge our authority.",
+        { "type": "verse", "marker": "v", "number": "10", "sid": "3JN 1:10" },
+        "So if I come, I will bring up what he is doing, talking wicked nonsense against us. And not content with that, he refuses to welcome the brothers, and also stops those who want to and puts them out of the church."
+      ]
+    },
+    {
+      "type": "para",
+      "marker": "p",
+      "content": [
+        { "type": "verse", "marker": "v", "number": "11", "sid": "3JN 1:11" },
+        "Beloved,",
+        {
+          "type": "note",
+          "marker": "x",
+          "content": [
+            { "type": "char", "marker": "xo", "content": ["1:11"] },
+            { "type": "char", "marker": "xt", "content": ["[Ps. 34:14; 37:27; Isa. 1:16, 17]"] }
+          ],
+          "caller": "+"
+        },
+        "do not imitate evil but imitate good.",
+        {
+          "type": "note",
+          "marker": "x",
+          "content": [
+            { "type": "char", "marker": "xo", "content": ["1:11"] },
+            { "type": "char", "marker": "xt", "content": ["1 John 2:29"] }
+          ],
+          "caller": "+"
+        },
+        "Whoever does good is from God;",
+        {
+          "type": "note",
+          "marker": "x",
+          "content": [
+            { "type": "char", "marker": "xo", "content": ["1:11"] },
+            { "type": "char", "marker": "xt", "content": ["See 1 John 3:6"] }
+          ],
+          "caller": "+"
+        },
+        "whoever does evil has not seen God.",
+        { "type": "verse", "marker": "v", "number": "12", "sid": "3JN 1:12" },
+        "Demetrius",
+        {
+          "type": "note",
+          "marker": "x",
+          "content": [
+            { "type": "char", "marker": "xo", "content": ["1:12"] },
+            { "type": "char", "marker": "xt", "content": ["[1 Tim. 3:7]"] }
+          ],
+          "caller": "+"
+        },
+        "has received a good testimony from everyone, and from the truth itself. We also add our testimony, and",
+        {
+          "type": "note",
+          "marker": "x",
+          "content": [
+            { "type": "char", "marker": "xo", "content": ["1:12"] },
+            { "type": "char", "marker": "xt", "content": ["John 21:24"] }
+          ],
+          "caller": "+"
+        },
+        "you know that our testimony is true."
+      ]
+    },
+    { "type": "para", "marker": "s1", "content": ["Final Greetings"] },
+    {
+      "type": "para",
+      "marker": "p",
+      "content": [
+        { "type": "verse", "marker": "v", "number": "13", "sid": "3JN 1:13" },
+        {
+          "type": "note",
+          "marker": "x",
+          "content": [
+            { "type": "char", "marker": "xo", "content": ["1:13"] },
+            { "type": "char", "marker": "xt", "content": ["2 John 12"] }
+          ],
+          "caller": "+"
+        },
+        "I had much to write to you, but I would rather not write with pen and ink.",
+        { "type": "verse", "marker": "v", "number": "14", "sid": "3JN 1:14" },
+        "I hope to see you soon, and we will talk face to face."
+      ]
+    },
+    {
+      "type": "para",
+      "marker": "p",
+      "content": [
+        { "type": "verse", "marker": "v", "number": "15", "sid": "3JN 1:15" },
+        "Peace be to you. The friends greet you. Greet the friends,",
+        {
+          "type": "note",
+          "marker": "x",
+          "content": [
+            { "type": "char", "marker": "xo", "content": ["1:15"] },
+            { "type": "char", "marker": "xt", "content": ["John 10:3"] }
+          ],
+          "caller": "+"
+        },
+        "each by name."
+      ]
+    }
+  ]
+}

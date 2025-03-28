@@ -37,7 +37,8 @@
     "@lexical/utils": "^0.27.2",
     "autoprefixer": "^10.4.20",
     "fast-equals": "^5.2.2",
-    "lexical": "^0.27.2"
+    "lexical": "^0.27.2",
+    "wavesurfer.js": "7.9.0"
   },
   "devDependencies": {
     "@types/react": "^18.3.18",

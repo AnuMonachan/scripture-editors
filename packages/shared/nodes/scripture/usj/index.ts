@@ -11,6 +11,7 @@ import { ParaNode } from "./ParaNode";
 import { MarkerNode } from "../../features/MarkerNode";
 import { UnknownNode } from "../../features/UnknownNode";
 import { ImmutableUnmatchedNode } from "../../features/ImmutableUnmatchedNode";
+import { AudioButtonNode } from "./AudioButtonNode";
 
 const scriptureUsjNodes = [
   BookNode,
@@ -25,6 +26,7 @@ const scriptureUsjNodes = [
   ImmutableUnmatchedNode,
   ImpliedParaNode,
   ParaNode,
+  AudioButtonNode,
   {
     replace: ParagraphNode,
     withKlass: ParaNode,
